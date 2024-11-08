@@ -7,20 +7,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WordForHangman {
-    private String fileName = "E:\\lerning java\\sergeyJukov\\task_one\\src\\main\\java\\org\\example\\russian_nouns.txt";
+    private File file = new File("src/main/resources/russian_nouns.txt");
     private List<String> wordsList = new ArrayList();
     private String wordForHangman;
 
     public WordForHangman(Scanner scanner) throws FileNotFoundException {
-        scanner = new Scanner(new File(this.fileName));
+        scanner = new Scanner(file);
 
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             this.wordForHangman = scanner.nextLine();
             this.wordsList.add(this.wordForHangman);
         }
-
         scanner.close();
-        this.setWordForHangman();
+        setWordForHangman();
     }
 
     public String getWordForHangman() {
@@ -29,8 +28,8 @@ public class WordForHangman {
 
     public void setWordForHangman() {
         do {
-            this.wordForHangman = (String)this.wordsList.get((int)(Math.random() * (double)this.wordsList.size()));
-        } while(this.wordForHangman.length() < 4 || this.wordForHangman.length() > 8);
+            this.wordForHangman = (String) this.wordsList.get((int) (Math.random() * (double) this.wordsList.size()));
+        } while (this.wordForHangman.length() < 4 || this.wordForHangman.length() > 8);
 
     }
 }

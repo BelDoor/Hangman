@@ -8,7 +8,5 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Hangman h = new Hangman(scanner);
         h.play(scanner);
-        scanner.close();
-        System.exit(0);
     }
 }

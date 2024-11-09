@@ -10,7 +10,7 @@ public class InputCheck {
     public InputCheck() {
     }
 
-    private boolean oneLetterCheck(String s) {
+    private boolean checkForOneLetter(String s) {
         if (s.length() == 1) {
             return true;
         } else {
@@ -19,12 +19,25 @@ public class InputCheck {
         }
     }
 
-    private boolean сyrillicСheck(char ch) {
+    private boolean checkForCyrillic(char ch) {
         if ((ch < 1072 || ch > 1103) && ch != 1105) {
             System.out.println("Вы ввели не кирилицу!");
             return false;
         } else {
             return true;
+        }
+    }
+
+
+    private boolean isCorrectInput(Scanner input) {
+        System.out.print("Введите одну букву -> ");
+        String enter = input.next();
+        if (this.checkForOneLetter(enter) && this.checkForCyrillic(enter.toLowerCase().charAt(0))) {
+            this.correctLetter = enter.charAt(0);
+            return true;
+        } else {
+            System.out.println("Повторите попытку!");
+            return false;
         }
     }
 
@@ -36,7 +49,6 @@ public class InputCheck {
                         riddleBoard.set(i, this.correctLetter);
                     }
                 }
-
                 return 0;
             } else {
                 System.out.println("НЕТ ТАКОЙ БУКВЫ!!! МИНУС ЖИЗНЬ!!!");
@@ -48,25 +60,13 @@ public class InputCheck {
         }
     }
 
-    private boolean isCorrectInput(Scanner input) {
-        System.out.print("Введите одну букву -> ");
-        String enter = input.next();
-        if (this.oneLetterCheck(enter) && this.сyrillicСheck(enter.toLowerCase().charAt(0))) {
-            this.correctLetter = enter.charAt(0);
-            return true;
-        } else {
-            System.out.println("Повторите попытку!");
-            return false;
-        }
-    }
-
-    public int inOrOutСheck(String s) {
-        if (this.oneLetterCheck(s)) {
+y
+    public int checkStartOrExit(String s) {
+        if (this.checkForOneLetter(s) && checkForCyrillic(s.toLowerCase().charAt(0))) {
             if (s.charAt(0) == 1085) {
                 System.out.println("Начали!!!");
                 return 1;
             }
-
             if (s.charAt(0) == 1074) {
                 return 0;
             }

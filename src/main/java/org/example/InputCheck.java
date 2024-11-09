@@ -60,7 +60,7 @@ public class InputCheck {
         }
     }
 
-y
+
     public int checkStartOrExit(String s) {
         if (this.checkForOneLetter(s) && checkForCyrillic(s.toLowerCase().charAt(0))) {
             if (s.charAt(0) == 1085) {

@@ -8,14 +8,14 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Hangman {
-    private WordForHangman wordForHangman;
+    private HunterWord wordForHangman;
     private String riddleWord;
     private List<Character> gameBoard;
     private Set<Character> selectedLiterals;
     private int life = 6;
 
     public Hangman(Scanner scanner) throws FileNotFoundException {
-        this.wordForHangman = new WordForHangman(scanner);
+        this.wordForHangman = new HunterWord(scanner);
         this.riddleWord = this.wordForHangman.getWordForHangman();
         this.createBoard();
         this.selectedLiterals = new LinkedHashSet();

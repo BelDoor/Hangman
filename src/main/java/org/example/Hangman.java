@@ -16,7 +16,7 @@ public class Hangman {
     private Scanner scanner;
 
     private final String START_MESSAGE = "Для начала отправь (н) для выхода отпарвь (в)?";
-    private final String START = "Ввелите одну букву от а до я!\n";
+    private final String START = "Введите одну букву от а до я!\n";
     private final String LAST_MESSAGE = "До встречи!";
     private int life;
 
@@ -70,7 +70,7 @@ public class Hangman {
             } else if (letterNext == -1) {
                 --life;
             }
-            System.out.println(this.gallows());
+            picture();
         }
     }
 
@@ -83,7 +83,6 @@ public class Hangman {
         }
     }
 
-
     public void start() {
         while (true) {
             System.out.println(START_MESSAGE);
@@ -92,6 +91,7 @@ public class Hangman {
             int st = auditor.checkStartOrExit(start);
             if (st == 1) {
                 prepareGame();
+                picture();
                 guessingTheWord();
                 endForRound();
             } else if (st == 0) {
@@ -103,15 +103,26 @@ public class Hangman {
         }
     }
 
-    public String gallows() {
+    private String stat() {
         return "Количество жизний: " + this.life +
                 "\nЗагадонное слово: " + this.gameBoard +
-                "\nПопытки: " + this.selectedLiterals +
-                "\n  +---+\n" +
-                "  |   |\n  " +
-                (this.life < 6 ? "O" : " ") + "   |\n " +
-                (this.life < 5 ? "/" : " ") + (this.life < 4 ? "|" : " ") + (this.life < 3 ? "\\" : " ") + "  |\n " +
-                (this.life < 2 ? "/" : " ") + " " + (this.life < 1 ? "\\" : " ") +
-                "  |\n=======\n";
+                "\nПопытки: " + this.selectedLiterals;
+    }
+
+    private String gollow(){
+        switch (life){
+            case 6: return Gallow.getGallowSixLife();
+            case 5: return Gallow.getGallowFiveLife();
+            case 4: return Gallow.getGallowFoureLife();
+            case 3: return Gallow.getGallowThreeLife();
+            case 2: return Gallow.getGallowTwoLife();
+            case 1: return Gallow.getGallowOneLife();
+            case 0: return Gallow.getGallowZeroLife();
+        }
+        return "";
+    }
+
+    private void picture(){
+        System.out.printf("Статистика:\n%s\n---------\n %s\n",stat(),gollow());
     }
 }

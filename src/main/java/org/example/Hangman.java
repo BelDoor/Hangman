@@ -1,6 +1,5 @@
 package org.example;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,8 +19,8 @@ public class Hangman {
     private final String LAST_MESSAGE = "До встречи!";
     private int life;
 
-    public Hangman(Scanner scanner) throws FileNotFoundException {
-        this.hunterWord = new HunterWord(scanner);
+    public Hangman(Scanner scanner){
+        this.hunterWord = new HunterWord();
         auditor = new AuditorInput();
         this.selectedLiterals = new LinkedHashSet();
         this.scanner = scanner;

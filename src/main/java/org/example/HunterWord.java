@@ -1,32 +1,50 @@
 package org.example;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class HunterWord {
-    private File file = new File("src/main/resources/russian_nouns.txt");
-   
+    private String pathFile = "russian_nouns.txt";
     private List<String> words = new ArrayList();
     private String wordForHangman;
 
-    public HunterWord(Scanner scanner) throws FileNotFoundException {
-        scanner = new Scanner(file);
-
-        while (scanner.hasNextLine()) {
-            this.words.add(scanner.nextLine());
-        }
-
-        scanner.close();
+    public HunterWord(){
+        readNouns();
         setWordForHangman();
     }
+
+    private InputStream inputNouns() throws IllegalAccessException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream(pathFile);
+        if(is==null){
+            throw new IllegalAccessException("file not found!" + pathFile);
+        }else {
+        return is;
+        }
+    }
+
+    private void readNouns() {
+
+            try(InputStreamReader streamReader = new InputStreamReader(inputNouns(),StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(streamReader)){
+
+                String line = reader.readLine();
+                while (line != null){
+                    words.add(line);
+                    line = reader.readLine();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+    }
+
 
     private int takeIndex() {
         return (int) (Math.random() * this.words.size());

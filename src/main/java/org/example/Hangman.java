@@ -8,61 +8,110 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Hangman {
-    private HunterWord wordForHangman;
+    private HunterWord hunterWord;
+    private AuditorInput auditor;
     private String riddleWord;
     private List<Character> gameBoard;
     private Set<Character> selectedLiterals;
-    private int life = 6;
+    private Scanner scanner;
+
+    private final String START_MESSAGE = "Для начала отправь (н) для выхода отпарвь (в)?";
+    private final String START = "Ввелите одну букву от а до я!\n";
+    private final String LAST_MESSAGE = "До встречи!";
+    private int life;
 
     public Hangman(Scanner scanner) throws FileNotFoundException {
-        this.wordForHangman = new HunterWord(scanner);
-        this.riddleWord = this.wordForHangman.getWordForHangman();
-        this.createBoard();
+        this.hunterWord = new HunterWord(scanner);
+        auditor = new AuditorInput();
         this.selectedLiterals = new LinkedHashSet();
+        this.scanner = scanner;
     }
 
     private void createBoard() {
         this.gameBoard = new ArrayList();
 
-        for(int i = 0; i < this.riddleWord.length(); ++i) {
+        for (int i = 0; i < this.riddleWord.length(); ++i) {
             this.gameBoard.add('_');
         }
     }
 
     private void prepareGame() {
         this.life = 6;
-        this.wordForHangman.setWordForHangman();
-        this.riddleWord = this.wordForHangman.getWordForHangman();
+        this.hunterWord.setWordForHangman();
+        this.riddleWord = this.hunterWord.getWordForHangman();
         this.createBoard();
         this.selectedLiterals.clear();
     }
 
-    public void play(Scanner input) {
-        while(true) {
-            System.out.println("Для начала отправь (н) для выхода отпарвь (в)?");
-            InputCheck in = new InputCheck();
-            int start = in.checkStartOrExit(input.next().toLowerCase());
-            if (start == 1) {
-                System.out.println("Количество жизний: " + this.life + "\nЗагадонное слово: " + this.gameBoard.toString() + "\n");
 
-                while(this.life > 0 && this.gameBoard.contains('_')) {
-                    this.life += in.isCorrectLitter(input, this.selectedLiterals, this.riddleWord, this.gameBoard);
-                    System.out.println(this.toString());
-                }
-
-                System.out.println(this.life > 0 ? "Поздравляю вы отгадали " + this.riddleWord : "Слово было " + this.riddleWord);
-            } else if (start == 0) {
-                System.out.println("До встречи!");
-                input.close();
-                System.exit(0);
-                return;
+    private void insertInBoard(char letter) {
+        for (int i = 0; i < riddleWord.length(); ++i) {
+            if (riddleWord.charAt(i) == letter) {
+                gameBoard.set(i, letter);
             }
-
-            this.prepareGame();
         }
     }
 
-    public String toString() {
-        return "Количество жизний: " + this.life + "\nЗагадонное слово: " + this.gameBoard + "\nПопытки: " + this.selectedLiterals + "\n  +---+\n  |   |\n  " + (this.life < 6 ? "O" : " ") + "   |\n " + (this.life < 5 ? "/" : " ") + (this.life < 4 ? "|" : " ") + (this.life < 3 ? "\\" : " ") + "  |\n " + (this.life < 2 ? "/" : " ") + " " + (this.life < 1 ? "\\" : " ") + "  |\n=======\n";
+    private boolean proceedGame() {
+        if (life > 0 && gameBoard.contains('_')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void guessingTheWord() {
+        while (proceedGame()) {
+            System.out.print(START);
+            String enter = scanner.nextLine();
+            int letterNext = auditor.isLetterInRiddleWord(enter, selectedLiterals, riddleWord);
+            if (letterNext == 1) {
+                insertInBoard(auditor.getCorrectLetter());
+            } else if (letterNext == -1) {
+                --life;
+            }
+            System.out.println(this.gallows());
+        }
+    }
+
+
+    private void endForRound() {
+        if (life > 0) {
+            System.out.printf("Поздравляю Вы отгадали слово -> %s\n", riddleWord);
+        } else {
+            System.out.printf("Слово было -> %s\n", riddleWord);
+        }
+    }
+
+
+    public void start() {
+        while (true) {
+            System.out.println(START_MESSAGE);
+            String start = scanner.nextLine();
+
+            int st = auditor.checkStartOrExit(start);
+            if (st == 1) {
+                prepareGame();
+                guessingTheWord();
+                endForRound();
+            } else if (st == 0) {
+                System.out.println(LAST_MESSAGE);
+                scanner.close();
+                System.exit(0);
+                return;
+            }
+        }
+    }
+
+    public String gallows() {
+        return "Количество жизний: " + this.life +
+                "\nЗагадонное слово: " + this.gameBoard +
+                "\nПопытки: " + this.selectedLiterals +
+                "\n  +---+\n" +
+                "  |   |\n  " +
+                (this.life < 6 ? "O" : " ") + "   |\n " +
+                (this.life < 5 ? "/" : " ") + (this.life < 4 ? "|" : " ") + (this.life < 3 ? "\\" : " ") + "  |\n " +
+                (this.life < 2 ? "/" : " ") + " " + (this.life < 1 ? "\\" : " ") +
+                "  |\n=======\n";
     }
 }

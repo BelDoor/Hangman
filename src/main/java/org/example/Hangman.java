@@ -87,7 +87,7 @@ public class Hangman {
     public void start() {
         while (true) {
             System.out.println(START_MESSAGE);
-            String start = scanner.nextLine();
+            String start = scanner.nextLine().toLowerCase();
 
             int st = auditor.checkStartOrExit(start);
             if (st == 1) {

@@ -4,15 +4,12 @@ import java.util.Set;
 
 public class AuditorInput {
 
-    private final String REPEAT_INPUT = "Повторите попытку!";
+    private static final String REPEAT_INPUT = "Повторите попытку!";
 
     private char correctLetter;
 
-    public AuditorInput() {
-    }
-
-    private boolean checkForOneLetter(String s) {
-        if (s.length() == 1) {
+    private boolean checkForOneLetter(String enterLine) {
+        if (enterLine.length() == 1) {
             return true;
         } else {
             System.out.printf("Вы ввели больше одной буквы!\n%s\n", REPEAT_INPUT);
@@ -20,8 +17,8 @@ public class AuditorInput {
         }
     }
 
-    private boolean checkForCyrillic(char ch) {
-        if ((ch < 'а' || ch > 'я') && ch != 'ё') {
+    private boolean checkForCyrillic(char letter) {
+        if ((letter < 'а' || letter > 'я') && letter != 'ё') {
             System.out.printf("Вы ввели не кирилицу!\n%s\n", REPEAT_INPUT);
             return false;
         } else {
@@ -54,7 +51,6 @@ public class AuditorInput {
         return correctLetter;
     }
 
-    //метод на проверку наличия введенной буквы в загадоном слове
     private boolean checkLetterInWord(String riddleWord){
         if (riddleWord.contains("" + this.correctLetter)) {
             System.out.printf("Откройте букву! -> %s\n", correctLetter);
@@ -72,7 +68,6 @@ public class AuditorInput {
     //if the letter is in riddleWord returns 1
     //if the letter is not in the word -1
     //if the input is incorrect or repeated 0
-    //вызвать изиметода который передает вход
     public int isLetterInRiddleWord(String enter, Set<Character> selectedLetters, String riddleWord){
         if(isCorrectLitter(enter, selectedLetters)){
             if(checkLetterInWord(riddleWord)){
@@ -101,9 +96,9 @@ public class AuditorInput {
     //if input corresponds to start returns 1
     //if input is incorrect -1
     //if input corresponds to output 0
-    public int checkStartOrExit(String enter) {
-        if (isCorrectInput(enter) ) {
-            return checkInputForStart(enter);
+    public int checkStartOrExit(String startMessage) {
+        if (isCorrectInput(startMessage) ) {
+            return checkInputForStart(startMessage);
         }
         return -1;
     }

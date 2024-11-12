@@ -1,6 +1,5 @@
 package org.example;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,11 +13,13 @@ public class Hangman {
     private List<Character> gameBoard;
     private Set<Character> selectedLiterals;
     private Scanner scanner;
-
-    private final String START_MESSAGE = "Для начала отправь (н) для выхода отпарвь (в)?";
-    private final String START = "Введите одну букву от а до я!\n";
-    private final String LAST_MESSAGE = "До встречи!";
     private int life;
+    
+    
+    private static final String START_MESSAGE = "Для начала отправь (н) для выхода отпарвь (в)?";
+    private static final String START = "Введите одну букву от а до я!\n";
+    private static final String LAST_MESSAGE = "До встречи!";
+    
 
     public Hangman(Scanner scanner){
         this.hunterWord = new HunterWord();
@@ -44,10 +45,10 @@ public class Hangman {
     }
 
 
-    private void insertInBoard(char letter) {
+    private void insertInBoard(char correctLetter) {
         for (int i = 0; i < riddleWord.length(); ++i) {
-            if (riddleWord.charAt(i) == letter) {
-                gameBoard.set(i, letter);
+            if (riddleWord.charAt(i) == correctLetter) {
+                gameBoard.set(i, correctLetter);
             }
         }
     }
@@ -86,9 +87,9 @@ public class Hangman {
     public void start() {
         while (true) {
             System.out.println(START_MESSAGE);
-            String start = scanner.nextLine().toLowerCase();
+            String startMessage = scanner.nextLine().toLowerCase();
 
-            int st = auditor.checkStartOrExit(start);
+            int st = auditor.checkStartOrExit(startMessage);
             if (st == 1) {
                 prepareGame();
                 picture();

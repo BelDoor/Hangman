@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HunterWord {
     private String pathFile = "russian_nouns.txt";
-    private List<String> words = new ArrayList();
+    private List<String> words = new ArrayList(51301);
     private String wordForHangman;
 
     public HunterWord(){

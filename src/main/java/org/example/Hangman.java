@@ -89,13 +89,13 @@ public class Hangman {
             System.out.println(START_MESSAGE);
             String startMessage = scanner.nextLine().toLowerCase();
 
-            int st = auditor.checkStartOrExit(startMessage);
-            if (st == 1) {
+            int startNumber = auditor.checkInputForStart(startMessage);
+            if (startNumber == 1) {
                 prepareGame();
                 picture();
                 guessingTheWord();
                 endForRound();
-            } else if (st == 0) {
+            } else if (startNumber == 0) {
                 System.out.println(LAST_MESSAGE);
                 scanner.close();
                 System.exit(0);
@@ -105,22 +105,12 @@ public class Hangman {
     }
 
     private String stat() {
-        return "Количество жизний: " + this.life +
-                "\nЗагадонное слово: " + this.gameBoard +
-                "\nПопытки: " + this.selectedLiterals;
+        return String.format("Количество жизний: %d\nЗагадонное слово: %s\nПопытки: %s", this.life,
+                this.gameBoard, this.selectedLiterals);
     }
 
-    private String gollow(){
-        switch (life){
-            case 6: return Gallow.getGallowSixLife();
-            case 5: return Gallow.getGallowFiveLife();
-            case 4: return Gallow.getGallowFoureLife();
-            case 3: return Gallow.getGallowThreeLife();
-            case 2: return Gallow.getGallowTwoLife();
-            case 1: return Gallow.getGallowOneLife();
-            case 0: return Gallow.getGallowZeroLife();
-        }
-        return "";
+    private String gollow() {
+        return GallowState.getGallowPicture(life);
     }
 
     private void picture(){

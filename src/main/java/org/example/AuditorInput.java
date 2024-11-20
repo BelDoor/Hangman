@@ -30,7 +30,7 @@ public class AuditorInput {
         this.correctLetter = correctLetter;
     }
 
-    private boolean isCorrectInput(String enter){
+    private boolean isCorrectInput(String enter) {
         if (this.checkForOneLetter(enter) && this.checkForCyrillic(enter.toLowerCase().charAt(0))) {
             setCorrectLetter(enter.toLowerCase().charAt(0));
             return true;
@@ -39,8 +39,8 @@ public class AuditorInput {
         }
     }
 
-    private boolean isCorrectLitter(String enter, Set<Character> letterEntered){
-        if(isCorrectInput(enter) && letterEntered.add(correctLetter)){
+    private boolean isCorrectLitter(String enter, Set<Character> letterEntered) {
+        if (isCorrectInput(enter) && letterEntered.add(correctLetter)) {
             return true;
         } else {
             return false;
@@ -51,13 +51,13 @@ public class AuditorInput {
         return correctLetter;
     }
 
-    private boolean checkLetterInWord(String riddleWord){
+    private boolean checkLetterInWord(String riddleWord) {
         if (riddleWord.contains("" + this.correctLetter)) {
             System.out.printf("Откройте букву! -> %s\n", correctLetter);
             return true;
         } else {
             System.out.printf("Мимо!\nМинус жизнь!!!\n%s\n", REPEAT_INPUT);
-           return false;
+            return false;
         }
     }
 
@@ -68,11 +68,11 @@ public class AuditorInput {
     //if the letter is in riddleWord returns 1
     //if the letter is not in the word -1
     //if the input is incorrect or repeated 0
-    public int isLetterInRiddleWord(String enter, Set<Character> selectedLetters, String riddleWord){
-        if(isCorrectLitter(enter, selectedLetters)){
-            if(checkLetterInWord(riddleWord)){
+    public int isLetterInRiddleWord(String enter, Set<Character> selectedLetters, String riddleWord) {
+        if (isCorrectLitter(enter, selectedLetters)) {
+            if (checkLetterInWord(riddleWord)) {
                 return 1;
-            }else {
+            } else {
                 return -1;
             }
         } else {
@@ -80,25 +80,17 @@ public class AuditorInput {
         }
     }
 
-
-    private int checkInputForStart(String enter){
-        if (enter.charAt(0) == 'н') {
+    /**
+     * @param startMessageer
+     * @return if input corresponds to start returns 1
+     * @return if input is incorrect -1
+     * @return if input corresponds to output 0
+     */
+    public int checkInputForStart(String startMessageer) {
+        if (startMessageer.equals("н")) {
             return 1;
-        } else if (enter.charAt(0) == 'в') {
+        } else if (startMessageer.equals("в")) {
             return 0;
-        }
-        return -1;
-    }
-
-    //accepts letter input
-    //checks letter for correct input
-    //checks letter for correspondence to start
-    //if input corresponds to start returns 1
-    //if input is incorrect -1
-    //if input corresponds to output 0
-    public int checkStartOrExit(String startMessage) {
-        if (isCorrectInput(startMessage) ) {
-            return checkInputForStart(startMessage);
         }
         return -1;
     }
